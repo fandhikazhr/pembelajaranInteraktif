@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kuis Boss Battle</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,82 +22,130 @@
             100% { background-position: 0% 50%; }
         }
         .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            margin-top: 50px;
         }
-        .boss {
-            width: 150px;
-            height: 150px;
-            background: red;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .boss-health {
-            width: 80%;
-            height: 20px;
-            background: gray;
-            border-radius: 10px;
-            margin-top: 10px;
+        .boss-container {
             position: relative;
+            display: inline-block;
         }
-        .boss-health-bar {
+        .boss-image {
+            width: 150px;
+        }
+        .boss-hp {
             width: 100%;
-            height: 100%;
-            background: red;
-            border-radius: 10px;
+            height: 20px;
+            background-color: red;
+            margin-bottom: 10px;
         }
         .timer {
-            margin-top: 10px;
-            font-size: 18px;
+            font-size: 20px;
+            margin: 10px 0;
         }
-        .question {
-            background: white;
-            color: black;
+        .question-container {
+            background: rgba(255, 255, 255, 0.2);
             padding: 20px;
             border-radius: 10px;
-            margin-top: 20px;
-            font-size: 20px;
-            max-width: 80%;
+            margin: 20px auto;
+            width: 80%;
         }
         .answers {
             display: flex;
+            justify-content: center;
             gap: 10px;
-            margin-top: 20px;
         }
         .answer {
-            background: yellow;
-            color: black;
             padding: 10px 20px;
+            background: #fff;
+            color: #333;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: 0.3s;
         }
         .answer:hover {
-            background: gold;
+            background: #ddd;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="boss">👾</div>
-        <div class="boss-health">
-            <div class="boss-health-bar"></div>
+        <h1>Kalahkan Boss dengan Kuis!</h1>
+        <div class="boss-container">
+            <div class="boss-hp" id="bossHpBar"></div>
+            <img src="boss.png" alt="Boss" class="boss-image">
         </div>
-        <div class="timer">⏳ Waktu: 60 detik</div>
-        <div class="question">Berapa hasil dari 5 + 3?</div>
-        <div class="answers">
-            <div class="answer">6</div>
-            <div class="answer">7</div>
-            <div class="answer">8</div>
-            <div class="answer">9</div>
+        <div class="timer">Waktu: <span id="timer">30</span> detik</div>
+        <div class="question-container">
+            <p id="question">Loading...</p>
+            <div class="answers" id="answers"></div>
         </div>
+        <button id="restartBtn" onclick="startGame()" style="display:none;">Coba Lagi</button>
     </div>
+    <script>
+        let questions = [
+            { q: "2 + 2?", options: ["3", "4", "5"], answer: "4" },
+            { q: "5 x 3?", options: ["15", "10", "20"], answer: "15" },
+            { q: "10 - 7?", options: ["2", "3", "4"], answer: "3" }
+        ];
+        let bossHp = 100;
+        let timeLeft = 30;
+        let currentQuestionIndex = 0;
+        let timerInterval;
+
+        function startGame() {
+            bossHp = 100;
+            timeLeft = 30;
+            currentQuestionIndex = 0;
+            document.getElementById("bossHpBar").style.width = bossHp + "%";
+            document.getElementById("restartBtn").style.display = "none";
+            nextQuestion();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                alert("Boss Kalah! Kamu Menang!");
+                clearInterval(timerInterval);
+                document.getElementById("restartBtn").style.display = "block";
+                return;
+            }
+            let q = questions[currentQuestionIndex];
+            document.getElementById("question").innerText = q.q;
+            let answersContainer = document.getElementById("answers");
+            answersContainer.innerHTML = "";
+            q.options.forEach(option => {
+                let btn = document.createElement("button");
+                btn.classList.add("answer");
+                btn.innerText = option;
+                btn.onclick = () => checkAnswer(option);
+                answersContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(answer) {
+            if (answer === questions[currentQuestionIndex].answer) {
+                bossHp -= 33;
+                document.getElementById("bossHpBar").style.width = bossHp + "%";
+                currentQuestionIndex++;
+                nextQuestion();
+            } else {
+                alert("Jawaban salah!");
+            }
+        }
+
+        function updateTimer() {
+            if (timeLeft <= 0) {
+                alert("Waktu habis! Kamu kalah!");
+                clearInterval(timerInterval);
+                document.getElementById("restartBtn").style.display = "block";
+            } else {
+                timeLeft--;
+                document.getElementById("timer").innerText = timeLeft;
+            }
+        }
+
+        startGame();
+    </script>
 </body>
 </html>
 
