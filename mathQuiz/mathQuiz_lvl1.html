@@ -83,11 +83,32 @@
         .answer:hover {
             background: #ddd;
         }
+        
+         .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        .notification.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Kalahkan Boss dengan Kuis!</h1>
+        <div id="notification" class="notification"></div>
         <div class="boss-container">
             <div class="boss-hp" id="bossHpBar"></div>
             <img src="boss.png" alt="Boss" class="boss-image" id="boss">
@@ -128,7 +149,7 @@
 
         function nextQuestion() {
             if (currentQuestionIndex >= questions.length) {
-                alert("Boss Kalah! Kamu Menang!");
+                showNotification('Boss Kalah! Kamu Menang! 🎉')
                 clearInterval(timerInterval);
                 document.getElementById("restartBtn").style.display = "block";
                 return;
@@ -166,7 +187,7 @@
                 currentQuestionIndex++;
                 nextQuestion();
             } else {
-                alert("Jawaban salah!");
+                showNotification('Jawaban salah! ❌')
                 comboCount = 0;
             }
         }
@@ -187,7 +208,7 @@
 
         function updateTimer() {
             if (timeLeft <= 0) {
-                alert("Waktu habis! Kamu kalah!");
+                showNotification('Waktu habis! Kamu kalah! 💩️')
                 clearInterval(timerInterval);
                 document.getElementById("restartBtn").style.display = "block";
             } else {
@@ -196,6 +217,15 @@
             }
         }
 
+        function showNotification(message) {
+            let notification = document.getElementById("notification");
+            notification.innerText = message;
+            notification.classList.add("show");
+            setTimeout(() => {
+                notification.classList.remove("show");
+            }, 2000);
+        }
+        
         startGame();
     </script>
 </body>
