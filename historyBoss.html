@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Boss Battle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffdde1, #fbc2eb, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .boss {
+            width: 150px;
+            height: 150px;
+            background: red;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .boss-health {
+            width: 80%;
+            height: 20px;
+            background: gray;
+            border-radius: 10px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .boss-health-bar {
+            width: 100%;
+            height: 100%;
+            background: red;
+            border-radius: 10px;
+        }
+        .timer {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        .question {
+            background: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 20px;
+            max-width: 80%;
+        }
+        .answers {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .answer {
+            background: yellow;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .answer:hover {
+            background: gold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="boss">👾</div>
+        <div class="boss-health">
+            <div class="boss-health-bar"></div>
+        </div>
+        <div class="timer">⏳ Waktu: 60 detik</div>
+        <div class="question">Berapa hasil dari 5 + 3?</div>
+        <div class="answers">
+            <div class="answer">6</div>
+            <div class="answer">7</div>
+            <div class="answer">8</div>
+            <div class="answer">9</div>
+        </div>
+    </div>
+</body>
+</html>
+
