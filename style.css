@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.themes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.theme {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.math {
+    background-color: #ffcc00;
+    color: #333;
+}
+
+.science {
+    background-color: #4caf50;
+    color: white;
+}
+
+.history {
+    background-color: #2196f3;
+    color: white;
+}
+
+.theme:hover {
+    transform: scale(1.1);
+}
+
