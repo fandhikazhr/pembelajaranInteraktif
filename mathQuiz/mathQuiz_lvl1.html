@@ -1,233 +1,288 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuis Boss Battle</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffdde1, #fbc2eb, #a1c4fd, #c2e9fb);
-            background-size: 400% 400%;
-            animation: gradientAnimation 10s ease infinite;
-            color: #fff;
-            margin: 0;
-            padding: 0;
-        }
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .container {
-            margin-top: 50px;
-        }
-        .boss-container {
-            position: relative;
-            display: inline-block;
-        }
-        .boss-image {
-            width: 150px;
-            transition: 0.2s;
-        }
-        .boss-hp {
-            width: 100%;
-            height: 20px;
-            background-color: red;
-            margin-bottom: 10px;
-        }
-        .damage-text {
-            position: absolute;
-            font-size: 24px;
-            font-weight: bold;
-            color: yellow;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 1;
-            transition: opacity 0.5s, transform 0.5s;
-        }
-        .combo-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: cyan;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        .timer {
-            font-size: 20px;
-            margin: 10px 0;
-        }
-        .question-container {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px auto;
-            width: 80%;
-        }
-        .answers {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-        }
-        .answer {
-            padding: 10px 20px;
-            background: #fff;
-            color: #333;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .answer:hover {
-            background: #ddd;
-        }
-        
-         .notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            font-size: 16px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-        .notification.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Boss Battle</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffdde1, #fbc2eb, #a1c4fd, #c2e9fb);
+      background-size: 400% 400%;
+      animation: gradientAnimation 10s ease infinite;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      margin-top: 50px;
+      padding-bottom: 100px;
+    }
+    .boss-container {
+      position: relative;
+      display: inline-block;
+    }
+    .boss-image {
+      width: 150px;
+      transition: 0.2s;
+    }
+    .boss-hp {
+      width: 100%;
+      height: 20px;
+      background-color: red;
+      margin-bottom: 10px;
+    }
+    .damage-text {
+      position: absolute;
+      font-size: 24px;
+      font-weight: bold;
+      color: yellow;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 1;
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .combo-text {
+      font-size: 24px;
+      font-weight: bold;
+      color: cyan;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    .timer {
+      font-size: 20px;
+      margin: 10px 0;
+    }
+    .question-container {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px auto;
+      width: 80%;
+    }
+    .answers {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .answer {
+      padding: 10px 20px;
+      background: #fff;
+      color: #333;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .answer:hover {
+      background: #ddd;
+    }
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s, visibility 0.5s;
+      z-index: 1000;
+    }
+    .notification.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .bottom-buttons {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .bottom-buttons button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #ffffff;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .bottom-buttons button:hover {
+      background: #eee;
+    }
+
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Kalahkan Boss dengan Kuis!</h1>
-        <div id="notification" class="notification"></div>
-        <div class="boss-container">
-            <div class="boss-hp" id="bossHpBar"></div>
-            <img src="boss.png" alt="Boss" class="boss-image" id="boss">
-            <div class="damage-text" id="damageText"></div>
-        </div>
-        <div class="combo-text" id="comboText"></div>
-        <div class="timer">Waktu: <span id="timer">30</span> detik</div>
-        <div class="question-container">
-            <p id="question">Loading...</p>
-            <div class="answers" id="answers"></div>
-        </div>
-        <button id="restartBtn" onclick="startGame()" style="display:none;">Coba Lagi</button>
+  <div class="container">
+    <h1>Kalahkan Boss dengan Kuis!</h1>
+    <div id="notification" class="notification"></div>
+    <div class="boss-container">
+      <div class="boss-hp" id="bossHpBar"></div>
+      <img src="boss.png" alt="Boss" class="boss-image" id="boss">
+      <div class="damage-text" id="damageText"></div>
     </div>
-    <script>
-        let questions = [
-            { q: "2 + 2?", options: ["3", "4", "5"], answer: "4" },
-            { q: "5 x 3?", options: ["15", "10", "20"], answer: "15" },
-            { q: "10 - 7?", options: ["2", "3", "4"], answer: "3" }
-        ];
-        let bossHp = 100;
-        let timeLeft = 30;
-        let currentQuestionIndex = 0;
-        let comboCount = 0;
-        let lastAnswerTime = Date.now();
-        let timerInterval;
+    <div class="combo-text" id="comboText"></div>
+    <div class="timer">Waktu: <span id="timer">30</span> detik</div>
+    <div class="question-container">
+      <p id="question">Loading...</p>
+      <div class="answers" id="answers"></div>
+    </div>
+  </div>
 
-        function startGame() {
-            bossHp = 100;
-            timeLeft = 30;
-            currentQuestionIndex = 0;
-            comboCount = 0;
-            document.getElementById("bossHpBar").style.width = bossHp + "%";
-            document.getElementById("restartBtn").style.display = "none";
-            document.getElementById("comboText").style.opacity = 0;
-            nextQuestion();
-            timerInterval = setInterval(updateTimer, 1000);
-        }
+  <!-- Tombol bawah -->
+  <div class="bottom-buttons">
+    <button id="restartBtn" onclick="startGame()">Coba Lagi</button>
+    <button id="continueBtn" onclick="continueGame()">Lanjut</button>
+    <button id="backBtn" onclick="goBack()">Kembali</button>
+  </div>
 
-        function nextQuestion() {
-            if (currentQuestionIndex >= questions.length) {
-                showNotification('Boss Kalah! Kamu Menang! 🎉')
-                clearInterval(timerInterval);
-                document.getElementById("restartBtn").style.display = "block";
-                return;
-            }
-            let q = questions[currentQuestionIndex];
-            document.getElementById("question").innerText = q.q;
-            let answersContainer = document.getElementById("answers");
-            answersContainer.innerHTML = "";
-            q.options.forEach(option => {
-                let btn = document.createElement("button");
-                btn.classList.add("answer");
-                btn.innerText = option;
-                btn.onclick = () => checkAnswer(option);
-                answersContainer.appendChild(btn);
-            });
-        }
+  <script>
+    let questions = [
+      { q: "2 + 2?", options: ["3", "4", "5"], answer: "4" },
+      { q: "5 x 3?", options: ["15", "10", "20"], answer: "15" },
+      { q: "10 - 7?", options: ["2", "3", "4"], answer: "3" }
+    ];
+    let bossHp, timeLeft, currentQuestionIndex, comboCount, lastAnswerTime, timerInterval;
 
-        function checkAnswer(answer) {
-            let currentTime = Date.now();
-            if (answer === questions[currentQuestionIndex].answer) {
-                let timeDiff = currentTime - lastAnswerTime;
-                lastAnswerTime = currentTime;
-                if (timeDiff < 5000) {
-                    comboCount++;
-                } else {
-                    comboCount = 0;
-                }
-                let damage = 20 + comboCount * 10;
-                bossHp -= damage;
-                document.getElementById("bossHpBar").style.width = bossHp + "%";
-                showDamage(damage);
-                if (comboCount > 0) {
-                    showCombo(comboCount);
-                }
-                currentQuestionIndex++;
-                nextQuestion();
-            } else {
-                showNotification('Jawaban salah! ❌')
-                comboCount = 0;
-            }
-        }
+    function startGame() {
+      bossHp = 100;
+      timeLeft = 30;
+      currentQuestionIndex = 0;
+      comboCount = 0;
+      lastAnswerTime = Date.now();
+      document.getElementById("bossHpBar").style.width = bossHp + "%";
+      document.getElementById("comboText").style.opacity = 0;
 
-        function showDamage(damage) {
-            let damageText = document.getElementById("damageText");
-            damageText.innerText = "-" + damage;
-            damageText.style.opacity = 1;
-            setTimeout(() => damageText.style.opacity = 0, 500);
-        }
+      document.getElementById("restartBtn").style.display = "none";
+      document.getElementById("continueBtn").style.display = "none";
+      document.getElementById("backBtn").style.display = "none";
 
-        function showCombo(combo) {
-            let comboText = document.getElementById("comboText");
-            comboText.innerText = "Kombo x" + (combo + 1) + "!";
-            comboText.style.opacity = 1;
-            setTimeout(() => comboText.style.opacity = 0, 1000);
-        }
+      nextQuestion();
+      clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+    }
 
-        function updateTimer() {
-            if (timeLeft <= 0) {
-                showNotification('Waktu habis! Kamu kalah! 💩️')
-                clearInterval(timerInterval);
-                document.getElementById("restartBtn").style.display = "block";
-            } else {
-                timeLeft--;
-                document.getElementById("timer").innerText = timeLeft;
-            }
-        }
+    function nextQuestion() {
+      if (currentQuestionIndex >= questions.length) {
+        showEndGame(true);
+        return;
+      }
+      let q = questions[currentQuestionIndex];
+      document.getElementById("question").innerText = q.q;
+      let answersContainer = document.getElementById("answers");
+      answersContainer.innerHTML = "";
+      q.options.forEach(option => {
+        let btn = document.createElement("button");
+        btn.classList.add("answer");
+        btn.innerText = option;
+        btn.onclick = () => checkAnswer(option);
+        answersContainer.appendChild(btn);
+      });
+    }
 
-        function showNotification(message) {
-            let notification = document.getElementById("notification");
-            notification.innerText = message;
-            notification.classList.add("show");
-            setTimeout(() => {
-                notification.classList.remove("show");
-            }, 2000);
+    function checkAnswer(answer) {
+      let currentTime = Date.now();
+      if (answer === questions[currentQuestionIndex].answer) {
+        let timeDiff = currentTime - lastAnswerTime;
+        lastAnswerTime = currentTime;
+        if (timeDiff < 5000) {
+          comboCount++;
+        } else {
+          comboCount = 0;
         }
-        
-        startGame();
-    </script>
+        let damage = 20 + comboCount * 10;
+        bossHp -= damage;
+        if (bossHp < 0) bossHp = 0;
+        document.getElementById("bossHpBar").style.width = bossHp + "%";
+        showDamage(damage);
+        if (comboCount > 0) showCombo(comboCount);
+        currentQuestionIndex++;
+        nextQuestion();
+      } else {
+        showNotification('Jawaban salah! ❌');
+        comboCount = 0;
+      }
+    }
+
+    function showDamage(damage) {
+      let damageText = document.getElementById("damageText");
+      damageText.innerText = "-" + damage;
+      damageText.style.opacity = 1;
+      setTimeout(() => {
+        damageText.style.opacity = 0;
+      }, 500);
+    }
+
+    function showCombo(combo) {
+      let comboText = document.getElementById("comboText");
+      comboText.innerText = "Kombo x" + (combo + 1) + "!";
+      comboText.style.opacity = 1;
+      setTimeout(() => {
+        comboText.style.opacity = 0;
+      }, 1000);
+    }
+
+    function updateTimer() {
+      if (timeLeft <= 0) {
+        showEndGame(false);
+      } else {
+        timeLeft--;
+        document.getElementById("timer").innerText = timeLeft;
+      }
+    }
+
+    function showNotification(message) {
+      let notification = document.getElementById("notification");
+      notification.innerText = message;
+      notification.classList.add("show");
+      setTimeout(() => {
+        notification.classList.remove("show");
+      }, 2000);
+    }
+
+    function showEndGame(success) {
+      clearInterval(timerInterval);
+      document.getElementById("restartBtn").style.display = "inline-block";
+      document.getElementById("backBtn").style.display = "inline-block";
+      if (success) {
+        document.getElementById("continueBtn").style.display = "inline-block";
+        showNotification('Boss Kalah! Kamu Menang! 🎉');
+      } else {
+        showNotification('Waktu habis! Kamu kalah! 💩️');
+      }
+    }
+
+    function continueGame() {
+      window.location.href = "level2.html"; // Ubah ke halaman selanjutnya
+    }
+
+    function goBack() {
+      window.location.href = "index.html"; // Ubah ke halaman utama/pemilihan tema
+    }
+
+    // Mulai game saat halaman dibuka
+    startGame();
+  </script>
 </body>
 </html>
-
