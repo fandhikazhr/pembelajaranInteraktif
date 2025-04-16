@@ -15,29 +15,35 @@
       margin: 0;
       padding: 0;
     }
+
     @keyframes gradientAnimation {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
     .container {
       margin-top: 50px;
       padding-bottom: 100px;
     }
+
     .boss-container {
       position: relative;
       display: inline-block;
     }
+
     .boss-image {
       width: 150px;
       transition: 0.2s;
     }
+
     .boss-hp {
       width: 100%;
       height: 20px;
       background-color: red;
       margin-bottom: 10px;
     }
+
     .damage-text {
       position: absolute;
       font-size: 24px;
@@ -48,6 +54,7 @@
       opacity: 1;
       transition: opacity 0.5s, transform 0.5s;
     }
+
     .combo-text {
       font-size: 24px;
       font-weight: bold;
@@ -55,10 +62,12 @@
       opacity: 0;
       transition: opacity 0.5s;
     }
+
     .timer {
       font-size: 20px;
       margin: 10px 0;
     }
+
     .question-container {
       background: rgba(255, 255, 255, 0.2);
       padding: 20px;
@@ -66,12 +75,14 @@
       margin: 20px auto;
       width: 80%;
     }
+
     .answers {
       display: flex;
       justify-content: center;
       gap: 10px;
       flex-wrap: wrap;
     }
+
     .answer {
       padding: 10px 20px;
       background: #fff;
@@ -81,9 +92,11 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
     .answer:hover {
       background: #ddd;
     }
+
     .notification {
       position: fixed;
       bottom: 20px;
@@ -99,6 +112,7 @@
       transition: opacity 0.5s, visibility 0.5s;
       z-index: 1000;
     }
+
     .notification.show {
       opacity: 1;
       visibility: visible;
@@ -130,7 +144,6 @@
     .bottom-buttons button:hover {
       background: #eee;
     }
-
   </style>
 </head>
 <body>
@@ -139,7 +152,7 @@
     <div id="notification" class="notification"></div>
     <div class="boss-container">
       <div class="boss-hp" id="bossHpBar"></div>
-      <img src="boss.png" alt="Boss" class="boss-image" id="boss">
+      <img src="boss_idle.gif" alt="Boss" class="boss-image" id="boss">
       <div class="damage-text" id="damageText"></div>
     </div>
     <div class="combo-text" id="comboText"></div>
@@ -150,7 +163,6 @@
     </div>
   </div>
 
-  <!-- Tombol bawah -->
   <div class="bottom-buttons">
     <button id="restartBtn" onclick="startGame()">Coba Lagi</button>
     <button id="continueBtn" onclick="continueGame()">Lanjut</button>
@@ -165,6 +177,21 @@
     ];
     let bossHp, timeLeft, currentQuestionIndex, comboCount, lastAnswerTime, timerInterval;
 
+    function setBossImage(state) {
+      const bossImg = document.getElementById("boss");
+      switch (state) {
+        case "idle":
+          bossImg.src = "idle.png";
+          break;
+        case "hurt":
+          bossImg.src = "hurt.png";
+          break;
+        case "die":
+          bossImg.src = "die.png";
+          break;
+      }
+    }
+
     function startGame() {
       bossHp = 100;
       timeLeft = 30;
@@ -178,6 +205,7 @@
       document.getElementById("continueBtn").style.display = "none";
       document.getElementById("backBtn").style.display = "none";
 
+      setBossImage("idle");
       nextQuestion();
       clearInterval(timerInterval);
       timerInterval = setInterval(updateTimer, 1000);
@@ -215,6 +243,15 @@
         bossHp -= damage;
         if (bossHp < 0) bossHp = 0;
         document.getElementById("bossHpBar").style.width = bossHp + "%";
+
+        // Ekspresi boss terluka
+        setBossImage("hurt");
+        setTimeout(() => {
+          if (bossHp > 0) {
+            setBossImage("idle");
+          }
+        }, 600);
+
         showDamage(damage);
         if (comboCount > 0) showCombo(comboCount);
         currentQuestionIndex++;
@@ -266,6 +303,7 @@
       document.getElementById("restartBtn").style.display = "inline-block";
       document.getElementById("backBtn").style.display = "inline-block";
       if (success) {
+        setBossImage("die");
         document.getElementById("continueBtn").style.display = "inline-block";
         showNotification('Boss Kalah! Kamu Menang! 🎉');
       } else {
@@ -274,15 +312,15 @@
     }
 
     function continueGame() {
-      window.location.href = "level2.html"; // Ubah ke halaman selanjutnya
+      window.location.href = "level2.html"; // Ganti sesuai kebutuhan
     }
 
     function goBack() {
-      window.location.href = "index.html"; // Ubah ke halaman utama/pemilihan tema
+      window.location.href = "index.html"; // Ganti sesuai kebutuhan
     }
 
-    // Mulai game saat halaman dibuka
     startGame();
   </script>
 </body>
 </html>
+
